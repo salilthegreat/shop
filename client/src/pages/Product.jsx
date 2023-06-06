@@ -9,6 +9,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { publicRequest } from "../requestMethods";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../redux/cartRedux";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -118,6 +120,7 @@ const Product = () => {
   const [quantity,setQuantity] = useState(1)
   const [color,setColor] = useState("");
   const [size,setSize] = useState("")
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     const getProducts = async() => {
@@ -140,7 +143,7 @@ const Product = () => {
   }
 
   const handleClick = () => {
-    console.log(color,size,quantity)
+    dispatch(addProduct({...product,color,size,quantity}))
   }
     return (
         <Container>
