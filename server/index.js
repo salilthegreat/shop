@@ -7,11 +7,15 @@ const userRoute = require("./routes/user")
 const productRoute = require("./routes/product")
 const cartRoute = require("./routes/cart")
 const orderRoute = require("./routes/order")
-const stripeRoute = require("./routes/stripe")
+const stripeRoute = require("./routes/stripe");
+const webhookRoute = require("./routes/webhook")
+// const paymentRoute = require("./routes/paymentgateway")
+
 const cors = require("cors")
 const morgan = require("morgan")
 
 dotenv.config()
+app.use("/api/webhook",webhookRoute)
 
 app.use(express.json())
 
@@ -27,6 +31,7 @@ app.use("/api/products",productRoute)
 app.use("/api/carts",cartRoute)
 app.use("/api/orders",orderRoute)
 app.use("/api/checkout",stripeRoute)
+// app.use("/api/gateway",paymentRoute)
 
 app.listen(process.env.PORT || 5000,()=>{
     console.log("Backend Server is running!")

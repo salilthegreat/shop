@@ -9,9 +9,30 @@ const OrderSchema = new mongoose.Schema(
                 quantity: { type: Number, default: 1 }
             }
         ],
-        amount:{type:Number,required:true},
-        address:{type:Object,required:true},
-        status:{type:String,default:true}
+        amount: { type: Number, required: true },
+        address: { type: Object },
+        paymentInfo: {
+            id: {
+                type: String,
+                required: true
+            },
+            status: {
+                type: String,
+                required: true
+            },
+            taxPaid: {
+                type: Number,
+                required: true
+            },
+            amountPaid: {
+                type: Number,
+                required: true
+            }
+        },
+        orderStatus:{
+            type:String,
+            default:"Processing"
+        }
     },
     { timestamps: true },
 );

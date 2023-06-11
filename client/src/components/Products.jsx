@@ -12,7 +12,6 @@ const Container = styled.div`
 `
 
 const Products = ({ cat, filters, sort }) => {
-  console.log(cat, filters, sort)
 
   let [products, setProducts] = useState([])
   let [filteredProducts, setFilteredProducts] = useState([])

@@ -2,15 +2,19 @@ import styled from "styled-components"
 import Navbar from "../components/Navbar"
 import Announcement from "../components/Announcement"
 import Footer from "../components/Footer"
-import { Add, Remove } from "@mui/icons-material"
+import { Add, CurrencyRupee, Remove } from "@mui/icons-material"
 import { mobile } from "../Responsive"
+import { useSelector } from "react-redux"
+import { userRequest } from "../requestMethods"
+import { shipingAaddress } from "../demoData"
+// import { Link } from "react-router-dom"
 
 const Container = styled.div`
 
 `
 const Wrapper = styled.div`
  padding: 20px;
- ${mobile({padding:"10px"})}
+ ${mobile({ padding: "10px" })}
 
 `
 const Title = styled.h1`
@@ -22,7 +26,7 @@ const Top = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
- ${mobile({padding:"0px"})}
+ ${mobile({ padding: "0px" })}
 
 
 `
@@ -35,7 +39,7 @@ const TopButton = styled.button`
   color: ${props => props.type === "filled" ? "white" : "black"};
 `
 const TopTexts = styled.div`
-${mobile({display:"none"})}
+${mobile({ display: "none" })}
 `
 const TopText = styled.span`
   text-decoration: underline;
@@ -46,7 +50,7 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({flexDirection:"Column"})}
+  ${mobile({ flexDirection: "Column" })}
 `
 const Info = styled.div`
   flex: 3;
@@ -54,7 +58,7 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
-  ${mobile({flexDirection:"Column"})}
+  ${mobile({ flexDirection: "Column" })}
 
 `
 const ProductDetail = styled.div`
@@ -64,7 +68,7 @@ const ProductDetail = styled.div`
 `
 const Image = styled.img`
   width: 200px;
-  ${mobile({width:"180px"})}
+  ${mobile({ width: "180px" })}
 
 
 `
@@ -73,7 +77,7 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  ${mobile({padding:"5px"})}
+  ${mobile({ padding: "5px" })}
 
 
 `
@@ -108,13 +112,13 @@ const ProductAmountContainer = styled.div`
 const ProductAmount = styled.div`
   font-size: 24px;
   margin: 5px;
-  ${mobile({margin:"5px 15px"})}
+  ${mobile({ margin: "5px 15px" })}
 
 `
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
-  ${mobile({marginBottom:"20px"})}
+  ${mobile({ marginBottom: "20px" })}
 
 `
 const Hr = styled.hr`
@@ -136,8 +140,8 @@ const SummaryItem = styled.div`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
-  font-weight: ${props=>props.type==="total" && 500};
-  font-size: ${props=>props.type==="total" && "24px"};
+  font-weight: ${props => props.type === "total" && 500};
+  font-size: ${props => props.type === "total" && "24px"};
 `
 const SummaryItemText = styled.span`
   
@@ -151,9 +155,28 @@ const SummaryButton = styled.button`
   background-color: black;
   color: white;
   font-weight: 600;
+  cursor: pointer;
 `
 
 const Cart = () => {
+  const cart = useSelector(state => state.cart);
+  const currentUser = {
+    email:"salil@gmail.com"
+  }
+  const newCart = {...cart,shipingAaddress,currentUser}
+  // const cartItems = useSelector(state => state.cart.products);
+   console.log(newCart)
+
+  const handleCheckout = async() => {
+    try {
+      const res = await userRequest.post(`/checkout/payment`,{newCart})
+      window.location.href = res.data.url
+      console.log(res.data)
+    } catch (err) {
+         console.log(err)
+    }
+  }
+
   return (
 
     <Container>
@@ -164,58 +187,43 @@ const Cart = () => {
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
+            <TopText>Shopping Bag({cart.quantity})</TopText>
             <TopText>Your Wishlist(0)</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>
+            {cart.products.map((product) => (
+              <>
             <Product>
               <ProductDetail>
-                <Image src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A" />
+                <Image src={product.img} />
                 <Details>
-                  <ProductName><b>Product:</b>JESSIE THUNDER SHOES</ProductName>
-                  <ProductId><b>Id:</b>56743930202</ProductId>
-                  <ProductColor color="black" />
-                  <ProductSize><b>Size:</b>37.5</ProductSize>
+                  <ProductName><b>Product:</b>{product.title}</ProductName>
+                  <ProductId><b>Id:</b>{product._id}</ProductId>
+                  <ProductColor color={product.color} />
+                  <ProductSize><b>Size:</b>{product.size}</ProductSize>
                 </Details>
               </ProductDetail>
               <PriceDetail>
                 <ProductAmountContainer>
                   <Add />
-                  <ProductAmount>2</ProductAmount>
+                  <ProductAmount>{product.quantity}</ProductAmount>
                   <Remove />
                 </ProductAmountContainer>
-                <ProductPrice>$ 30</ProductPrice>
+                <ProductPrice><CurrencyRupee/> {product.price*product.quantity}</ProductPrice>
               </PriceDetail>
             </Product>
             <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png" />
-                <Details>
-                  <ProductName><b>Product:</b>HAKURA T-SHIRT</ProductName>
-                  <ProductId><b>Id:</b>56743930202</ProductId>
-                  <ProductColor color="gray" />
-                  <ProductSize><b>Size:</b>M</ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>1</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>$ 20</ProductPrice>
-              </PriceDetail>
-            </Product>
+            </>
+            ))}
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
@@ -227,9 +235,12 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText >Total</SummaryItemText>
-              <SummaryItemPrice>$ 80</SummaryItemPrice>
+              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <SummaryButton>CHECKOUT NOW</SummaryButton>
+            <SummaryButton onClick={handleCheckout}>CHECKOUT NOW</SummaryButton>
+            {/* <Link to={"/pay"}>
+            <SummaryButton >CHECKOUT NOW</SummaryButton>
+            </Link> */}
           </Summary>
         </Bottom>
       </Wrapper>

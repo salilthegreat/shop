@@ -15,14 +15,23 @@ router.post("/",verifyToken,async(req,res)=>{
 })
 
 //UPDATE ORDER
-router.post("/:id",verifyTokenAndAdmin,async(req,res)=>{
+router.put("/:id",verifyTokenAndAdmin,async(req,res)=>{
     try {
-        const updatedOrder = Order.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true});
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true});
         res.status(200).json(updatedOrder)
     } catch (err) {
         res.status(500).json(err)
     }
 })
+
+// router.put("/",verifyTokenAndAuthorization,async(req,res)=>{
+//     try {
+//         const updatedOrder = await Order.findOneAndUpdate({payment_intent:req.body.payment_intent_client_secret},{$set:{status:"paid"}},{new:true});
+//         res.status(200).json(updatedOrder)
+//     } catch (err) {
+//         res.status(500).json(err)
+//     }
+// })
 
 //DELETE ORDER
 router.delete("/:id",verifyTokenAndAdmin,async(req,res)=>{
