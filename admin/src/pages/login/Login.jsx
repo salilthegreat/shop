@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/apiCall';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("")
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleClick = (e) => {
     e.preventDefault();
