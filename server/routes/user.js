@@ -55,7 +55,7 @@ router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
         const date = new Date();
         const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
         const data = await User.aggregate([
-            { $match:{createdAt:{$gt:lastYear}}},
+            { $match:{createdAt:{$gte:lastYear}}},
             {$project:{
                 month:{$month:"$createdAt"}
             }},

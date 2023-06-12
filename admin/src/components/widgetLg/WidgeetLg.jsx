@@ -37,7 +37,7 @@ export default function WidgeetLg() {
                 <th className="widgetLgTh">Status</th>
             </tr>
             {orders?.map((order)=>(
-            <tr className="widgetLgTr">
+            <tr className="widgetLgTr" key={order._id} >
                 <td className="widgetLgUser">
                     <img src="https://images.pexels.com/photos/6324235/pexels-photo-6324235.jpeg?auto=compress&cs=tinysrgb&w=800" alt="" className="widgetLgImg" />
                     <span className="widgetLgName">Susan Carol</span>

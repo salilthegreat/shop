@@ -12,7 +12,7 @@ import NewProduct from "./pages/newProduct/NewProduct";
 import Login from "./pages/login/Login";
 
 function App() {
-  let admin = JSON.parse(JSON.parse(localStorage.getItem("persist:root"))?.user)?.currentUser?.isAdmin;
+  let admin = localStorage.getItem("persist:root") ? JSON.parse(JSON.parse(localStorage.getItem("persist:root"))?.user)?.currentUser?.isAdmin : null ;
   return (
     <BrowserRouter>
       {admin &&
