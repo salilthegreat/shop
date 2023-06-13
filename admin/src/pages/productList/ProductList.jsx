@@ -45,7 +45,7 @@ export default function ProductList() {
             renderCell: (params) => {
                 return (
                     <>
-                        <Link to={"/product/" + params.row._id}>
+                        <Link to={"/product/" + params?.row?._id}>
                             <button className="productListEdit">Edit</button>
                         </Link>
                         <DeleteOutline className="productListDelete" onClick={() => handleDelete(params.row._id)} />
@@ -56,10 +56,11 @@ export default function ProductList() {
     ];
 
     return (
-        <div className="productList">
+          <div className="productList">
+            {products &&
             <DataGrid
                 rows={products}
-                getRowId={row=>row._id}
+                getRowId={row=>row?._id}
                 columns={columns}
                 disableRowSelectionOnClick
                 initialState={{
@@ -70,6 +71,7 @@ export default function ProductList() {
                 pageSizeOptions={[5,8,10]}
                 checkboxSelection
             />
+            }
         </div>
     )
 }

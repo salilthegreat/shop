@@ -2,12 +2,15 @@ import { useState } from "react"
 import "./newProduct.css"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import app from "../../firebase";
+import { addProducts } from "../../redux/apiCall";
+import { useDispatch } from "react-redux";
 
 export default function NewProduct() {
 
     const [inputs, setInputs] = useState({});
     const [file, setFile] = useState(null);
     const [cat, setCat] = useState([])
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
         setInputs((prev) => {
@@ -17,7 +20,6 @@ export default function NewProduct() {
     const handleCat = (e) => {
         setCat(e.target.value.split(","))
     }
-    console.log(file)
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -67,7 +69,8 @@ export default function NewProduct() {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     console.log('File available at', downloadURL);
                     console.log({...inputs,img:downloadURL,categories:cat});
-                    // const product = { ...inputs, img: downloadURL, categories: cat };
+                    const product = { ...inputs, img: downloadURL, categories: cat };
+                    addProducts(product,dispatch)
                 });
             }
         );
