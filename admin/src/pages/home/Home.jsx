@@ -39,6 +39,7 @@ export default function Home() {
       }
     }
     getUserStats()
+    // eslint-disable-next-line
   },[])
 
   console.log(userStats)
